@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block nav %}
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand Vinna_text" href="#"><big><b>Vinna</b></big></a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user and not user.is_anonymous %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Hello <span class="text-capitalize">{{ user.get_full_name|default:user.username }}</span>! <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#">Account</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="#"><big>Sign Up</big></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div>
+                    <h1>Third-party authentication demo</h1>
+                    <p>
+                        <ul>
+                        {% if user and not user.is_anonymous %}
+                        <li>
+                        <a>Hello {{ user.get_full_name|default:user.username }}!</a>
+                        </li>
+                        <li>
+                        <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+                        </li>
+                        {% else %}
+                        <li>
+                        <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
+                        </li>
+                        <li>
+                        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
+                        </li>
+                        {% endif %}
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
